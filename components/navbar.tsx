@@ -62,7 +62,7 @@ export function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button asChild size="sm" className="h-10 px-5 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl glow-emerald">
-              <Link href="#contact">Start a Project</Link>
+              <Link href="/start-project">Start a Project</Link>
             </Button>
           </div>
 
@@ -91,7 +91,7 @@ export function Navbar() {
                 </Link>
               ))}
               <Button asChild size="sm" className="w-fit mt-2 bg-primary text-primary-foreground glow-emerald rounded-xl">
-                <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/start-project" onClick={() => setIsMobileMenuOpen(false)}>
                   Start a Project
                 </Link>
               </Button>
