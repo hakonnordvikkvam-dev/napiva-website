@@ -1,21 +1,44 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowRight, Check, Sparkles, Search, Lightbulb, MessageCircle } from "lucide-react"
+import { ArrowRight, Check, Sparkles, Search, Lightbulb, MessageCircle, AlertCircle } from "lucide-react"
 
 export function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/haakon@napiva.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+
+      if (response.ok) {
+        setIsSubmitted(true)
+        formRef.current?.reset()
+      } else {
+        setError("Something went wrong. Please try again or email us directly at haakon@napiva.com")
+      }
+    } catch {
+      setError("Connection error. Please try again or email us directly at haakon@napiva.com")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
@@ -31,9 +54,16 @@ export function ContactForm() {
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
               Thank you!
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-lg mb-8">
               {"We've received your inquiry and will be in touch within 24 hours."}
             </p>
+            <Button
+              variant="outline"
+              onClick={() => setIsSubmitted(false)}
+              className="rounded-xl"
+            >
+              Send another message
+            </Button>
           </div>
         </div>
       </section>
@@ -116,7 +146,18 @@ export function ContactForm() {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="flex items-start gap-3 p-4 mb-6 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive">
+                  <AlertCircle className="size-5 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm">{error}</p>
+                </div>
+              )}
+
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                {/* FormSubmit configuration */}
+                <input type="hidden" name="_subject" value="New Project Inquiry from Napiva Website" />
+                <input type="hidden" name="_template" value="table" />
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -125,7 +166,7 @@ export function ContactForm() {
                     <Input
                       id="name"
                       name="name"
-                      placeholder="John Smith"
+                      placeholder="Your name"
                       required
                       className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
                     />
@@ -138,7 +179,7 @@ export function ContactForm() {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="john@company.com"
+                      placeholder="you@company.com"
                       required
                       className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
                     />
@@ -152,7 +193,7 @@ export function ContactForm() {
                   <Input
                     id="company"
                     name="company"
-                    placeholder="Acme Inc."
+                    placeholder="Your company name"
                     required
                     className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
                   />
@@ -165,7 +206,7 @@ export function ContactForm() {
                   <Textarea
                     id="message"
                     name="message"
-                    placeholder="Tell us about your project, current challenges, and what you're looking to achieve..."
+                    placeholder="Tell us about your project, current challenges, and what you want help with..."
                     required
                     rows={4}
                     className="bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl resize-none transition-colors"
@@ -179,7 +220,7 @@ export function ContactForm() {
                   <Input
                     id="timeline"
                     name="timeline"
-                    placeholder="e.g., Q2 2025, ASAP, 3 months"
+                    placeholder="e.g. ASAP, Q3 2025, 3 months"
                     className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
                   />
                 </div>

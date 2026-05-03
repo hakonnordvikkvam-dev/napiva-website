@@ -68,7 +68,7 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-8 lg:px-12 py-32 text-center">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-32 text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-secondary/60 border border-border/80 backdrop-blur-sm mb-10">
           <div className="relative size-2">
@@ -78,27 +78,25 @@ export function Hero() {
           <span className="text-sm font-medium text-foreground/80 tracking-wide">AI Automation Agency</span>
         </div>
 
-        {/* Headline - More premium typography */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground mb-8 text-balance leading-[0.95]">
-          AI systems that{" "}
-          <span className="text-gradient">automate</span>
-          <br className="hidden sm:block" />
-          {" "}your business
+        {/* Headline - Premium wide typography */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight mb-8 leading-[0.95]">
+          <span className="text-foreground">High-end systems.</span>
+          <br />
+          <span className="text-gradient">Fully automated.</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-12 text-pretty leading-relaxed">
-          We build custom AI automations, internal tools, and streamlined systems 
-          that eliminate repetitive work and help your business scale intelligently.
+        <p className="mx-auto max-w-3xl text-lg sm:text-xl text-muted-foreground mb-12 text-pretty leading-relaxed">
+          We design, build, and connect full-stack systems, AI automations, and cinematic websites — production-grade work that runs itself.
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
           <Button asChild size="lg" className="h-14 px-8 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl">
-            <Link href="#contact" className="flex items-center gap-2.5">
-              Start Your Project
+            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="flex items-center gap-2.5 cursor-pointer">
+              Start a Project
               <ArrowRight className="size-4" />
-            </Link>
+            </a>
           </Button>
           <Button asChild variant="outline" size="lg" className="h-14 px-8 text-base border-border/80 hover:bg-secondary/80 hover:border-primary/30 rounded-xl transition-all duration-300">
             <Link href="#process">See How We Work</Link>
