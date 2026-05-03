@@ -1,11 +1,7 @@
 "use client"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { useState } from "react"
+import { ChevronDown } from "lucide-react"
 
 const faqs = [
   {
@@ -35,6 +31,12 @@ const faqs = [
 ]
 
 export function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  const toggleFaq = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index)
+  }
+
   return (
     <section id="faq" className="section-spacing relative overflow-hidden">
       {/* Subtle ambient */}
@@ -57,24 +59,40 @@ export function FAQ() {
           </h2>
         </div>
 
-        {/* FAQ Accordion */}
-        <div className="mx-auto max-w-3xl">
-          <Accordion type="single" collapsible className="space-y-4">
+        {/* FAQ Items */}
+        <div className="mx-auto max-w-3xl space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem
+            <div
               key={index}
-              value={`item-${index}`}
-              className="glass-card border border-border/50 rounded-2xl px-6 sm:px-8 data-[state=open]:border-primary/40 transition-all duration-300 card-glow overflow-hidden"
+              className={`glass-card border rounded-2xl px-6 sm:px-8 transition-all duration-300 overflow-hidden ${
+                openIndex === index ? 'border-primary/40' : 'border-border/50'
+              }`}
             >
-              <AccordionTrigger className="text-left text-foreground hover:no-underline py-6 text-base sm:text-lg font-medium">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+              <button
+                type="button"
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center justify-between gap-4 py-6 text-left"
+              >
+                <span className="text-base sm:text-lg font-medium text-foreground">
+                  {faq.question}
+                </span>
+                <ChevronDown 
+                  className={`size-5 text-muted-foreground shrink-0 transition-transform duration-200 ${
+                    openIndex === index ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openIndex === index ? 'max-h-96 pb-6' : 'max-h-0'
+                }`}
+              >
+                <p className="text-muted-foreground leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
           ))}
-          </Accordion>
         </div>
       </div>
     </section>
