@@ -1,5 +1,3 @@
-"use client"
-
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Zap, Cpu, Workflow } from "lucide-react"
@@ -95,10 +93,10 @@ export function Hero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
           <Button asChild size="lg" className="h-14 px-8 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl">
-            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="flex items-center gap-2.5 cursor-pointer">
+            <Link href="/start-project" className="flex items-center gap-2.5">
               Start a Project
               <ArrowRight className="size-4" />
-            </a>
+            </Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="h-14 px-8 text-base border-border/80 hover:bg-secondary/80 hover:border-primary/30 rounded-xl transition-all duration-300">
             <Link href="#process">See How We Work</Link>

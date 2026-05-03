@@ -1,75 +1,8 @@
-"use client"
-
-import { useState, useRef } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowRight, Check, Sparkles, Search, Lightbulb, MessageCircle, AlertCircle } from "lucide-react"
+import { ArrowRight, Search, Lightbulb, MessageCircle } from "lucide-react"
 
 export function ContactForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const formRef = useRef<HTMLFormElement>(null)
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError(null)
-
-    const formData = new FormData(e.currentTarget)
-
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/haakon@napiva.com", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      })
-
-      if (response.ok) {
-        setIsSubmitted(true)
-        formRef.current?.reset()
-      } else {
-        setError("Something went wrong. Please try again or email us directly at haakon@napiva.com")
-      }
-    } catch {
-      setError("Connection error. Please try again or email us directly at haakon@napiva.com")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  if (isSubmitted) {
-    return (
-      <section id="contact" className="section-spacing relative overflow-hidden">
-        <div className="absolute inset-0 bg-secondary/30" />
-        <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12 relative z-10">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="relative inline-flex items-center justify-center size-20 rounded-2xl bg-primary/20 border border-primary/30 mb-8">
-              <Check className="size-10 text-primary" />
-              <div className="absolute inset-0 rounded-2xl bg-primary/30 blur-xl" />
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Thank you!
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              {"We've received your inquiry and will be in touch within 24 hours."}
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => setIsSubmitted(false)}
-              className="rounded-xl"
-            >
-              Send another message
-            </Button>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   return (
     <section id="contact" className="section-spacing relative overflow-hidden">
       {/* Rich background treatment */}
@@ -95,9 +28,9 @@ export function ContactForm() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left side - Copy */}
-          <div className="lg:sticky lg:top-32">
+          <div>
             <p className="text-sm font-medium text-primary mb-4 tracking-widest uppercase">Get Started</p>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-8 text-balance tracking-tight leading-[1.1]">
               {"Let's build"}
@@ -129,118 +62,36 @@ export function ContactForm() {
             </div>
           </div>
 
-          {/* Right side - Form */}
+          {/* Right side - CTA Card */}
           <div className="relative">
-            {/* Form glow backdrop */}
+            {/* Card glow backdrop */}
             <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl opacity-60" />
             
-            <div className="relative glass-card border border-border/60 rounded-3xl p-8 sm:p-10 card-glow">
-              {/* Form header */}
-              <div className="flex items-center gap-3 mb-8 pb-6 border-b border-border/50">
-                <div className="flex items-center justify-center size-10 rounded-xl bg-primary/10 border border-primary/20">
-                  <Sparkles className="size-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">Start your project</h3>
-                  <p className="text-sm text-muted-foreground">{"We'll"} respond within 24 hours</p>
-                </div>
+            <div className="relative glass-card border border-border/60 rounded-3xl p-8 sm:p-12 card-glow text-center">
+              <div className="flex items-center justify-center size-16 rounded-2xl bg-primary/10 border border-primary/20 mx-auto mb-6">
+                <ArrowRight className="size-7 text-primary" />
               </div>
-
-              {error && (
-                <div className="flex items-start gap-3 p-4 mb-6 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive">
-                  <AlertCircle className="size-5 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm">{error}</p>
-                </div>
-              )}
-
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-                {/* FormSubmit configuration */}
-                <input type="hidden" name="_subject" value="New Project Inquiry from Napiva Website" />
-                <input type="hidden" name="_template" value="table" />
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium text-foreground">
-                      Name <span className="text-primary">*</span>
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Your name"
-                      required
-                      className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-foreground">
-                      Email <span className="text-primary">*</span>
-                    </label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@company.com"
-                      required
-                      className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium text-foreground">
-                    Company <span className="text-primary">*</span>
-                  </label>
-                  <Input
-                    id="company"
-                    name="company"
-                    placeholder="Your company name"
-                    required
-                    className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium text-foreground">
-                    What do you need help with? <span className="text-primary">*</span>
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    placeholder="Tell us about your project, current challenges, and what you want help with..."
-                    required
-                    rows={4}
-                    className="bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl resize-none transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="timeline" className="text-sm font-medium text-foreground">
-                    Timeline <span className="text-muted-foreground font-normal">(optional)</span>
-                  </label>
-                  <Input
-                    id="timeline"
-                    name="timeline"
-                    placeholder="e.g. ASAP, Q3 2025, 3 months"
-                    className="h-12 bg-secondary/60 border-border/60 focus:border-primary/60 rounded-xl transition-colors"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full h-14 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl mt-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    "Sending..."
-                  ) : (
-                    <span className="flex items-center gap-2.5">
-                      Send Inquiry
-                      <ArrowRight className="size-4" />
-                    </span>
-                  )}
-                </Button>
-              </form>
+              
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                Ready to get started?
+              </h3>
+              <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
+                Fill out a quick form and {"we'll"} get back to you within 24 hours with the next steps.
+              </p>
+              
+              <Button asChild size="lg" className="h-14 px-10 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl">
+                <Link href="/start-project" className="flex items-center gap-2.5">
+                  Start Your Project
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+              
+              <p className="text-sm text-muted-foreground mt-6">
+                Or email us directly at{" "}
+                <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
+                  haakon@napiva.com
+                </a>
+              </p>
             </div>
           </div>
         </div>

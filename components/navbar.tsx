@@ -62,16 +62,7 @@ export function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button asChild size="sm" className="h-10 px-5 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl glow-emerald">
-              <a 
-                href="#contact" 
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); 
-                }}
-                className="cursor-pointer"
-              >
-                Start a Project
-              </a>
+              <Link href="/start-project">Start a Project</Link>
             </Button>
           </div>
 
@@ -100,17 +91,9 @@ export function Navbar() {
                 </Link>
               ))}
               <Button asChild size="sm" className="w-fit mt-2 bg-primary text-primary-foreground glow-emerald rounded-xl">
-                <a 
-                  href="#contact" 
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    setIsMobileMenuOpen(false);
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); 
-                  }}
-                  className="cursor-pointer"
-                >
+                <Link href="/start-project" onClick={() => setIsMobileMenuOpen(false)}>
                   Start a Project
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
