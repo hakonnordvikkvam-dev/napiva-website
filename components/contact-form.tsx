@@ -80,7 +80,7 @@ export function ContactForm() {
               
               <Link 
                 href="/start-project" 
-                className="inline-flex items-center justify-center gap-2.5 h-14 px-10 text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl transition-all"
+                className="relative z-10 pointer-events-auto inline-flex items-center justify-center gap-2.5 h-14 px-10 text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl transition-all"
               >
                 Start Your Project
                 <ArrowRight className="size-4" />
