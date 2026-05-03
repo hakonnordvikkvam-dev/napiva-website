@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 
 export function Navbar() {
@@ -61,9 +60,12 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button asChild size="sm" className="h-10 px-5 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl glow-emerald">
-              <Link href="/start-project">Start a Project</Link>
-            </Button>
+            <Link 
+              href="/start-project"
+              className="inline-flex items-center justify-center h-10 px-5 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl glow-emerald transition-all"
+            >
+              Start a Project
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,11 +92,13 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild size="sm" className="w-fit mt-2 bg-primary text-primary-foreground glow-emerald rounded-xl">
-                <Link href="/start-project" onClick={() => setIsMobileMenuOpen(false)}>
-                  Start a Project
-                </Link>
-              </Button>
+              <Link 
+                href="/start-project" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="inline-flex items-center justify-center w-fit mt-2 h-8 px-3 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl transition-all"
+              >
+                Start a Project
+              </Link>
             </div>
           </div>
         )}

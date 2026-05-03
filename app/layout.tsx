@@ -13,25 +13,21 @@ const _geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Axiom AI | AI Automation Agency',
-  description: 'We build custom AI systems that automate your business. Streamline operations, reduce manual work, and scale intelligently.',
-  generator: 'v0.app',
+  title: 'Napiva | AI Automation Agency',
+  description: 'High-end AI systems, automations, and websites built to help businesses scale.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
+    icon: '/favicon.svg',
     apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'Napiva | AI Automation Agency',
+    description: 'High-end AI systems, automations, and websites built to help businesses scale.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Napiva | AI Automation Agency',
+    description: 'High-end AI systems, automations, and websites built to help businesses scale.',
   },
 }
 

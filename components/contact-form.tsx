@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { ArrowRight, Search, Lightbulb, MessageCircle } from "lucide-react"
 
 export function ContactForm() {
@@ -79,12 +78,13 @@ export function ContactForm() {
                 Fill out a quick form and {"we'll"} get back to you within 24 hours with the next steps.
               </p>
               
-              <Button asChild size="lg" className="h-14 px-10 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl">
-                <Link href="/start-project" className="flex items-center gap-2.5">
-                  Start Your Project
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+              <Link 
+                href="/start-project" 
+                className="relative z-10 pointer-events-auto inline-flex items-center justify-center gap-2.5 h-14 px-10 text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl transition-all"
+              >
+                Start Your Project
+                <ArrowRight className="size-4" />
+              </Link>
               
               <p className="text-sm text-muted-foreground mt-6">
                 Or email us directly at{" "}

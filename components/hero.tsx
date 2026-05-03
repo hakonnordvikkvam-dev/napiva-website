@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { ArrowRight, Zap, Cpu, Workflow } from "lucide-react"
 
 export function Hero() {
@@ -92,15 +91,19 @@ export function Hero() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
-          <Button asChild size="lg" className="h-14 px-8 text-base bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl">
-            <Link href="/start-project" className="flex items-center gap-2.5">
-              Start a Project
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="h-14 px-8 text-base border-border/80 hover:bg-secondary/80 hover:border-primary/30 rounded-xl transition-all duration-300">
-            <Link href="#process">See How We Work</Link>
-          </Button>
+          <Link 
+            href="/start-project" 
+            className="inline-flex items-center justify-center gap-2.5 h-14 px-8 text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 glow-emerald rounded-xl transition-all"
+          >
+            Start a Project
+            <ArrowRight className="size-4" />
+          </Link>
+          <Link 
+            href="#process"
+            className="inline-flex items-center justify-center h-14 px-8 text-base font-medium border border-border/80 bg-background hover:bg-secondary/80 hover:border-primary/30 rounded-xl transition-all duration-300"
+          >
+            See How We Work
+          </Link>
         </div>
 
         {/* Credibility points */}

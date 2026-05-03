@@ -1,40 +1,42 @@
 "use client"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { useState } from "react"
+import { ChevronDown } from "lucide-react"
 
 const faqs = [
   {
     question: "What types of businesses do you work with?",
-    answer: "We work with businesses of all sizes, from startups to enterprise companies. Our clients typically have operational workflows that involve repetitive tasks, data processing, or customer interactions that can benefit from AI automation. We've helped e-commerce brands, SaaS companies, agencies, and professional services firms.",
+    answer: "We work with service businesses, agencies, startups, and growing teams that want to automate repetitive work and improve operations.",
   },
   {
     question: "What can you automate?",
-    answer: "Almost any repetitive, rule-based process can be automated. Common examples include data entry and processing, customer support responses, lead qualification, document generation, email workflows, reporting, inventory management, and internal operations. If you're doing something manually more than a few times a week, there's likely a way to automate it.",
+    answer: "We can automate lead handling, onboarding, reporting, internal workflows, customer support, data entry, follow-ups, and tool integrations.",
   },
   {
     question: "How long does a project usually take?",
-    answer: "Project timelines vary based on complexity. Simple automations can be built and deployed in 2-4 weeks. More comprehensive systems with multiple integrations typically take 6-12 weeks. We'll provide a detailed timeline during our discovery process based on your specific needs.",
+    answer: "Most projects take between 1–4 weeks depending on complexity, integrations, and the scope of the system.",
   },
   {
     question: "Do you build custom AI solutions?",
-    answer: "Yes, we specialize in custom AI solutions. This includes custom chatbots trained on your data, AI assistants for specific workflows, intelligent document processing, predictive analytics, and more. We use the latest AI models and techniques to build solutions that are tailored to your exact requirements.",
+    answer: "Yes. Every system is designed around your workflow, tools, data, and business goals.",
   },
   {
     question: "Can you improve our current systems?",
-    answer: "Absolutely. We often work with businesses that have existing tools and workflows that need optimization. We can audit your current systems, identify inefficiencies, and implement improvements — whether that means adding AI capabilities, streamlining integrations, or rebuilding components for better performance.",
+    answer: "Yes. We can audit your existing setup, identify bottlenecks, and improve or rebuild systems so they work more reliably.",
   },
   {
     question: "What happens after I submit the form?",
-    answer: "Once you submit your inquiry, we'll review it within 24 hours and reach out to schedule a discovery call. During this call, we'll discuss your needs in detail, answer any questions, and determine if we're a good fit for your project. If we move forward, you'll receive a detailed proposal with scope, timeline, and next steps.",
+    answer: "We review your inquiry, identify the best automation opportunities, and get back to you with the next steps.",
   },
 ]
 
 export function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  const toggleFaq = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index)
+  }
+
   return (
     <section id="faq" className="section-spacing relative overflow-hidden">
       {/* Subtle ambient */}
@@ -57,24 +59,40 @@ export function FAQ() {
           </h2>
         </div>
 
-        {/* FAQ Accordion */}
-        <div className="mx-auto max-w-3xl">
-          <Accordion type="single" collapsible className="space-y-4">
+        {/* FAQ Items */}
+        <div className="mx-auto max-w-3xl space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem
+            <div
               key={index}
-              value={`item-${index}`}
-              className="glass-card border border-border/50 rounded-2xl px-6 sm:px-8 data-[state=open]:border-primary/40 transition-all duration-300 card-glow overflow-hidden"
+              className={`glass-card border rounded-2xl px-6 sm:px-8 transition-all duration-300 overflow-hidden ${
+                openIndex === index ? 'border-primary/40' : 'border-border/50'
+              }`}
             >
-              <AccordionTrigger className="text-left text-foreground hover:no-underline py-6 text-base sm:text-lg font-medium">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+              <button
+                type="button"
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center justify-between gap-4 py-6 text-left"
+              >
+                <span className="text-base sm:text-lg font-medium text-foreground">
+                  {faq.question}
+                </span>
+                <ChevronDown 
+                  className={`size-5 text-muted-foreground shrink-0 transition-transform duration-200 ${
+                    openIndex === index ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openIndex === index ? 'max-h-96 pb-6' : 'max-h-0'
+                }`}
+              >
+                <p className="text-muted-foreground leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
           ))}
-          </Accordion>
         </div>
       </div>
     </section>
