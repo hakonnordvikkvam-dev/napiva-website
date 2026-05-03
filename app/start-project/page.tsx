@@ -1,12 +1,74 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { useState } from "react"
+import { createClient } from "@supabase/supabase-js"
 
-export const metadata = {
-  title: "Start Your Project | Napiva",
-  description: "Tell us what you want to automate, improve, or build. We'll review your inquiry and get back to you.",
-}
+// Create Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+)
 
 export default function StartProjectPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
+  // Form state
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [company, setCompany] = useState("")
+  const [projectHelp, setProjectHelp] = useState("")
+  const [timeline, setTimeline] = useState("")
+  const [additionalInfo, setAdditionalInfo] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setError(null)
+
+    // Validate required fields
+    if (!name.trim() || !email.trim() || !company.trim() || !projectHelp.trim()) {
+      setError("Please fill in all required fields.")
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      const { error: insertError } = await supabase
+        .from("project_inquiries")
+        .insert({
+          name: name.trim(),
+          email: email.trim(),
+          company: company.trim(),
+          project_help: projectHelp.trim(),
+          timeline: timeline.trim() || null,
+          additional_info: additionalInfo.trim() || null,
+          source: "napiva-website"
+        })
+
+      if (insertError) {
+        throw insertError
+      }
+
+      // Success - clear form and show success message
+      setIsSuccess(true)
+      setName("")
+      setEmail("")
+      setCompany("")
+      setProjectHelp("")
+      setTimeline("")
+      setAdditionalInfo("")
+    } catch (err) {
+      console.error("Error submitting form:", err)
+      setError("Something went wrong. Please try again or email us directly.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-background">
       {/* Background effects */}
@@ -65,122 +127,162 @@ export default function StartProjectPage() {
             </p>
           </div>
 
-          {/* Form Card */}
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl opacity-60" />
-            <div className="relative bg-secondary/30 border border-border/60 rounded-3xl p-8 sm:p-10 backdrop-blur-sm">
-              <form 
-                action="https://formsubmit.co/haakon@napiva.com" 
-                method="POST"
-                className="space-y-6"
-              >
-                {/* FormSubmit configuration */}
-                <input type="hidden" name="_subject" value="New Napiva project inquiry" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
-                <input type="hidden" name="_next" value="https://napiva.com/start-project?submitted=true" />
-
-                {/* Name and Email row */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium text-foreground">
-                      Name <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Your name"
-                      required
-                      className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-foreground">
-                      Email <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@company.com"
-                      required
-                      className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Company */}
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium text-foreground">
-                    Company <span className="text-primary">*</span>
-                  </label>
-                  <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    placeholder="Your company name"
-                    required
-                    className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
-                  />
-                </div>
-
-                {/* Project help */}
-                <div className="space-y-2">
-                  <label htmlFor="project_help" className="text-sm font-medium text-foreground">
-                    What do you need help with? <span className="text-primary">*</span>
-                  </label>
-                  <textarea
-                    id="project_help"
-                    name="project_help"
-                    placeholder="Tell us about your project, current challenges, and what you want help with..."
-                    required
-                    rows={4}
-                    className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
-                  />
-                </div>
-
-                {/* Timeline */}
-                <div className="space-y-2">
-                  <label htmlFor="timeline" className="text-sm font-medium text-foreground">
-                    Timeline <span className="text-muted-foreground font-normal">(optional)</span>
-                  </label>
-                  <input
-                    id="timeline"
-                    name="timeline"
-                    type="text"
-                    placeholder="e.g. ASAP, Q3 2025, 3 months"
-                    className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
-                  />
-                </div>
-
-                {/* Additional info */}
-                <div className="space-y-2">
-                  <label htmlFor="additional_info" className="text-sm font-medium text-foreground">
-                    Anything else we should know? <span className="text-muted-foreground font-normal">(optional)</span>
-                  </label>
-                  <textarea
-                    id="additional_info"
-                    name="additional_info"
-                    placeholder="Budget, specific tools you use, previous attempts, etc."
-                    rows={3}
-                    className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
-                  />
-                </div>
-
-                {/* Submit button */}
-                <button
-                  type="submit"
-                  className="w-full h-14 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 transition-colors glow-emerald flex items-center justify-center gap-2.5"
-                >
-                  Send Inquiry
-                  <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          {/* Success Message */}
+          {isSuccess ? (
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl opacity-60" />
+              <div className="relative bg-secondary/30 border border-primary/40 rounded-3xl p-8 sm:p-10 backdrop-blur-sm text-center">
+                <div className="size-16 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center mx-auto mb-6">
+                  <svg className="size-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-3">Inquiry sent!</h2>
+                <p className="text-muted-foreground mb-6">
+                  {"We've"} received your project inquiry. {"We'll"} get back to you within 24 hours.
+                </p>
+                <button
+                  onClick={() => setIsSuccess(false)}
+                  className="text-primary hover:underline font-medium"
+                >
+                  Send another inquiry
                 </button>
-              </form>
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Form Card */
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl opacity-60" />
+              <div className="relative bg-secondary/30 border border-border/60 rounded-3xl p-8 sm:p-10 backdrop-blur-sm">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Error message */}
+                  {error && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+                      {error}
+                    </div>
+                  )}
+
+                  {/* Name and Email row */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium text-foreground">
+                        Name <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Your name"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-foreground">
+                        Email <span className="text-primary">*</span>
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="you@company.com"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Company */}
+                  <div className="space-y-2">
+                    <label htmlFor="company" className="text-sm font-medium text-foreground">
+                      Company <span className="text-primary">*</span>
+                    </label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      placeholder="Your company name"
+                      required
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
+                    />
+                  </div>
+
+                  {/* Project help */}
+                  <div className="space-y-2">
+                    <label htmlFor="project_help" className="text-sm font-medium text-foreground">
+                      What do you need help with? <span className="text-primary">*</span>
+                    </label>
+                    <textarea
+                      id="project_help"
+                      name="project_help"
+                      placeholder="Tell us about your project, current challenges, and what you want help with..."
+                      required
+                      rows={4}
+                      value={projectHelp}
+                      onChange={(e) => setProjectHelp(e.target.value)}
+                      className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
+                    />
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="space-y-2">
+                    <label htmlFor="timeline" className="text-sm font-medium text-foreground">
+                      Timeline <span className="text-muted-foreground font-normal">(optional)</span>
+                    </label>
+                    <input
+                      id="timeline"
+                      name="timeline"
+                      type="text"
+                      placeholder="e.g. ASAP, Q3 2025, 3 months"
+                      value={timeline}
+                      onChange={(e) => setTimeline(e.target.value)}
+                      className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
+                    />
+                  </div>
+
+                  {/* Additional info */}
+                  <div className="space-y-2">
+                    <label htmlFor="additional_info" className="text-sm font-medium text-foreground">
+                      Anything else we should know? <span className="text-muted-foreground font-normal">(optional)</span>
+                    </label>
+                    <textarea
+                      id="additional_info"
+                      name="additional_info"
+                      placeholder="Budget, specific tools you use, previous attempts, etc."
+                      rows={3}
+                      value={additionalInfo}
+                      onChange={(e) => setAdditionalInfo(e.target.value)}
+                      className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full h-14 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary/90 transition-colors glow-emerald flex items-center justify-center gap-2.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        Send Inquiry
+                        <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* Footer note */}
           <p className="text-center text-sm text-muted-foreground mt-8">
