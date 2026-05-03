@@ -78,8 +78,8 @@ export function Hero() {
           <span className="text-sm font-medium text-foreground/80 tracking-wide">AI Automation Agency</span>
         </div>
 
-        {/* Headline - Premium wide typography */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight mb-8 leading-[0.95]">
+        {/* Headline - Premium typography */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-[0.95]">
           <span className="text-foreground">High-end systems.</span>
           <br />
           <span className="text-gradient">Fully automated.</span>
