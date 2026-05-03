@@ -3,18 +3,27 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react"
-import { createClient } from "@supabase/supabase-js"
+import { createClient, SupabaseClient } from "@supabase/supabase-js"
 
-// Create Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-)
+// Create Supabase client only if env vars are available
+function getSupabaseClient(): SupabaseClient | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  
+  if (!url || !key) {
+    return null
+  }
+  
+  return createClient(url, key)
+}
 
 export default function StartProjectPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [supabaseConfigured] = useState(() => {
+    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)
+  })
   
   // Form state
   const [name, setName] = useState("")
@@ -28,6 +37,14 @@ export default function StartProjectPage() {
     e.preventDefault()
     setIsSubmitting(true)
     setError(null)
+
+    // Check if Supabase is configured
+    const supabase = getSupabaseClient()
+    if (!supabase) {
+      setError("Supabase is not configured yet. Please contact us at haakon@napiva.com")
+      setIsSubmitting(false)
+      return
+    }
 
     // Validate required fields
     if (!name.trim() || !email.trim() || !company.trim() || !projectHelp.trim()) {
