@@ -10,8 +10,14 @@
 - Anonymous REST reads returned HTTP 401 / SQLSTATE 42501. Two scoped test rows were deleted, independently restoring baseline three rows and zero test rows.
 - Deliberately invalid local public key produced the generic error, preserved field values and reenabled Submit; no row was stored. Correct local configuration restored immediately.
 - Database migrations `restrict_website_inquiry_public_privileges` and `validate_anonymous_website_inquiries` removed unnecessary public privileges and enforce required fields, field lengths, email shape and source in RLS. Direct API oversized/empty/wrong-source inserts were rejected. Advisor returned no warnings afterward.
-- Production build passed, including built-in TypeScript validation after removing ignoreBuildErrors. Separate TypeScript check passed. Lint: zero errors, six existing UI-helper warnings; hook/purity rules are downgraded only on the listed pre-existing files, not globally. ESLint 9 is pinned for compatibility with Next 16.2.4 plugins; it currently emits a maintenance/deprecation notice. Toolchain upgrade is separate work.
+- Production build passed, including built-in TypeScript validation after removing ignoreBuildErrors. Separate TypeScript check passed. Lint: zero errors, six existing UI-helper warnings; hook/purity rules are downgraded only on the listed pre-existing files, not globally. ESLint 9 is pinned for compatibility with Next 16.2.4 plugins; it currently emits a maintenance/deprecation notice. ESLint 10 was not retained because the matching plugins declare incompatible peers.
 - Home, privacy, terms and contact pages inspected locally on mobile. Optional Vercel Analytics removed from layout. Form client disables auth persistence, refresh and URL-session detection; no private credential is used.
+
+### Security dependency follow-up
+
+- Updated Next.js and matching lint config to 16.4.3; removed unused Zod/resolvers and the unused analytics package. Applied narrow compatible transitive overrides for lodash, ws, browserslist and baseline-browser-mapping.
+- Initial production audit: 5 critical / 29 high / 19 moderate / 3 low advisory findings. Final production audit: **zero findings at every severity**. This is package-audit evidence, not a guarantee of application security.
+- Rebuilt after the final lockfile changes: production build including TypeScript passed; lint still 0 errors / 6 documented pre-existing warnings. Final built browser chunks contain the correct restored Supabase hostname, no old dead hostname and no Vercel Insights path.
 
 ## Compliance assessment and remaining evidence
 
@@ -24,7 +30,7 @@
 
 ## Release dependencies
 
-1. Connect the Netlify account owning **stately-frangipane-d35677** and verify its team, Free plan, Git connection, currently published deployment and operational-credit status. Current connector exposes only Napis/haakongrimsbu and unrelated illustrious-flan-aba15c; browser fallback reaches sign-in. Do not duplicate/import or repoint DNS blindly.
+1. Connect the Netlify account owning **stately-frangipane-d35677** and verify its team, Free plan, Git connection, currently published deployment and operational-credit status. Two connections are now available: Napis/haakongrimsbu and owner-access Napiva/haakonnordvikkvam-blip (Free). Napiva inventory contains napiva-approval-dev, two objection sites and old napivaai (Vite build from 2025); neither account lists stately-frangipane-d35677. Browser fallback reaches sign-in. Correct-team access is verified; ownership of the active domain target and deploy-credit status remain unresolved. Do not duplicate/import or repoint DNS blindly.
 2. Gmail ticket #1157230 has only acknowledgement and user's Yes! reply, no resolution observed. Existing daily reminder was not duplicated.
 3. On correct site, configure preview-context `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the existing intended project. Key is public by design; never use secret/service-role/database credentials. Values need **Builds** scope and a rebuild. `.env.local` is ignored and must never be committed.
 4. Deploy this branch to an isolated temporary URL, confirm emitted backend URL and no analytics script; repeat bounded synthetic submission, SQL readback, public read denial and scoped cleanup there. Verify headers/mobile/legal pages and finish abuse/provider decisions.
