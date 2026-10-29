@@ -1,5 +1,42 @@
 # Website release checkpoint — 29 October 2026
 
+## Latest release readiness — 29 October 2026
+
+**This section supersedes the earlier `Release dependencies` list below where the earlier text describes work that is now complete. Preserve the original list as historical context, not current instructions.**
+
+### Verified: test implementation works
+
+- **PR #5** (branch `compliance/legal-footer-privacy-20261029`) is an **OPEN DRAFT**, not merged into `main`; deployment to live production has NOT been authorized.
+- On 29 October, a user-submitted synthetic enquiry on the **hosted Netlify Deploy Preview #5** displayed "Inquiry sent!". Independent SQL confirmed the exact row (`id=14`) in Supabase website project `bfsjmuhztzajiftwcwec`. That synthetic row was deleted with exact-field predicates, and follow-up SQL verified zero matching rows.
+- `netlify.toml` now contains build-time **public** Supabase URL and matching publishable key for `deploy-preview` and `production` contexts. The production block exists **only in the unmerged PR**; production settings have not changed. Public client credentials do not confer administrative permissions.
+- Netlify and Vercel commit statuses were successful for the subsequent docs-only commit, and Supabase reported zero current security advisor lints. A green build/security advisor is **not** proof of deployment security, spam resilience or regulatory compliance.
+- The *real* `napiva.com` is already delivered by Netlify site `stately-frangipane-d35677` (site ID `51f8826d-c911-45ed-bdee-015b562223b6`), currently published deploy `6a872b29679d65fe295cd891`, based on `main` commit `a52c1b1f...` from **20 August**. Production has not yet received PR #5.
+- The actual Netlify site is reachable by exact site/deploy ID for **read-only metadata** but is missing from both connected account project inventories. Forms management returned 404. **Read-only access is not enough to perform or roll back a safe production release.**
+- The **Napiva Free** team (slug `haakonnordvikkvam-blip`) is confirmed owner-access for its own listed sites; it also contains an **empty** new test project `napiva-website-review` created while investigating. That empty site is not a replacement or a successful alternate deploy.
+- Netlify billing email dated 8 October explicitly says **all 300 monthly credits were exhausted** in the 4 October–3 November cycle, blocking *production* deploys but allowing PR previews. Support ticket `#1157230` has no substantive response yet. A check for restored credit access is scheduled for 4 November, and an independent support-response watch exists.
+
+### Unresolved release gates — MUST NOT merge/deploy until handled
+
+1. **Hosting control:** establish administrator ability to deploy **and roll back** the live `stately-frangipane-d35677` site; or instead build and verify a separate owned Netlify site and have an explicit approved DNS cutover/rollback plan. A passing PR preview is not proof the connected account controls production.
+2. **Billing:** verify production deploys are permitted by Netlify after reset or support action; do not purchase an upgrade without explicit owner approval.
+3. **Production data/reliability:** target restored site `bfsjmuhztzajiftwcwec` (Free), acknowledge that low user activity can cause automatic pausing and form outages; monitored daily, but no uptime guarantee. Decide whether this risk with the visible email fallback is acceptable, or separately prove a compliant no-cost replacement before retiring Supabase.
+4. **Privacy & security:** establish actual provider/account relationship and applicable agreements, international transfer and email handling, and that manual monthly retention reviews will occur. Ensure the privacy notice matches the **actually** published configuration. A browser honeypot + database field validation **do not stop repeated valid spam requests**; either implement and test an anti-bypass solution or explicitly record a proportionate acceptance/monitoring decision. Consider enforcing MFA on the owned Netlify account, currently reported disabled.
+5. **User approval:** owner must see exact final preview, PR head commit, deploy target and rollback instructions, then **explicitly authorize the production release**. No merge, production deploy, DNS changes or paid service just because build checks are green.
+
+### Production release / rollback checklist (PLAN, not performed)
+
+- [ ] Confirm target Netlify project owner/admin, Git linkage, billing permission, deployment history, and an actual tested rollback control.
+- [ ] Confirm final PR diff, all dependencies/tests, correct public env vars for the **production** build context, and that no private keys, patient records or tracking were introduced.
+- [ ] Obtain explicit release approval identifying repository, PR commit, target site and acceptable fallback plan.
+- [ ] Merge/deploy through the authorized, controllable site; confirm target is ready before any domain operation. Do not switch DNS when deploying to the same existing site; for a separate new site, switch only after all preliminary verification and explicit approval.
+- [ ] On `napiva.com` after release: test homepage, legal pages, mobile, headers and the inquiry flow with **synthetic** data only. Verify exact row in intended database, public read denial and scoped test deletion; confirm email fallback visible if backend fails.
+- [ ] If production test fails, **revert to the known previous working deployment** through a verified rollback mechanism; never assume the above deploy ID can be restored by a team without ownership rights.
+- [ ] Record exact production commit, deployment ID, dates, tests, privacy decisions and any residual risk in Napiva Master Log.
+- [ ] Maintain the manual monthly inquiry review and daily Supabase status watch; do not claim monitoring prevents Free-plan pausing.
+
+**Source of truth:** the Napiva Master Log. This checkpoint is engineering release guidance; it is not a legal certification.
+
+
 ## Verified
 
 - Original three local legal changes were inspected and preserved. Original diff backed up outside the repository.
