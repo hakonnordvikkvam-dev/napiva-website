@@ -62,7 +62,7 @@ export default function StartProjectPage() {
       const supabase = getSupabaseClient()
       if (!supabase) {
         setServiceError(true)
-        setError("We cannot accept inquiries right now. Please email haakon@napiva.com.")
+        setError("We cannot accept inquiries right now. Please email haakon.nordvik.kvam@gmail.com.")
         return
       }
       const { error: insertError } = await supabase
@@ -191,10 +191,10 @@ export default function StartProjectPage() {
                         <p className="mt-3">
                           If the form is unavailable, email us at{" "}
                           <a
-                            href="mailto:haakon@napiva.com?subject=Napiva%20project%20inquiry"
+                            href="mailto:haakon.nordvik.kvam@gmail.com?subject=Napiva%20project%20inquiry"
                             className="font-medium text-primary underline underline-offset-2"
                           >
-                            haakon@napiva.com
+                            haakon.nordvik.kvam@gmail.com
                           </a>
                           . Please do not include patient or medical information.
                         </p>
@@ -350,8 +350,8 @@ export default function StartProjectPage() {
           {/* Footer note */}
           <p className="text-center text-sm text-muted-foreground mt-8">
             You can also reach us at{" "}
-            <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
-              haakon@napiva.com
+            <a href="mailto:haakon.nordvik.kvam@gmail.com" className="text-primary hover:underline">
+              haakon.nordvik.kvam@gmail.com
             </a>
           </p>
         </div>
