@@ -29,7 +29,7 @@ No blanket retention deadline is asserted here. The privacy policy currently des
 
 ## Requests by individuals
 
-Requests for access, correction, erasure, objection or restriction can arrive at `haakon@napiva.com`.
+After draft PR #5 is authorized and deployed, requests for access, correction, erasure, objection or restriction can arrive at `haakon.nordvik.kvam@gmail.com`. Production contact routing may still use the original address until that release is complete.
 
 - Confirm you are dealing with the relevant person without requesting unnecessary extra information.
 - Identify which enquiry record(s) relate to the request; do not disclose any other person's data.
