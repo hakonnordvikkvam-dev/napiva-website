@@ -1,0 +1,18 @@
+[build]
+  command = "pnpm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PNPM_VERSION = "10.34.9"
+
+# Next.js is handled by Netlify's automatically managed OpenNext adapter.
+# Set the two NEXT_PUBLIC_SUPABASE_* values in the site's build environment.
+# Never place private credentials in this file.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"

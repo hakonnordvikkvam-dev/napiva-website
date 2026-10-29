@@ -3,7 +3,9 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react"
-import { createClient, SupabaseClient } from "@supabase/supabase-js"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
+
+let inquiryClient: SupabaseClient | null = null
 
 // Create Supabase client only if env vars are available
 function getSupabaseClient(): SupabaseClient | null {
@@ -14,16 +16,16 @@ function getSupabaseClient(): SupabaseClient | null {
     return null
   }
   
-  return createClient(url, key)
+  inquiryClient ??= createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  })
+  return inquiryClient
 }
 
 export default function StartProjectPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [supabaseConfigured] = useState(() => {
-    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)
-  })
   
   // Form state
   const [name, setName] = useState("")
@@ -32,34 +34,40 @@ export default function StartProjectPage() {
   const [projectHelp, setProjectHelp] = useState("")
   const [timeline, setTimeline] = useState("")
   const [additionalInfo, setAdditionalInfo] = useState("")
+  const [website, setWebsite] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
     setIsSubmitting(true)
     setError(null)
 
-    // Check if Supabase is configured
-    const supabase = getSupabaseClient()
-    if (!supabase) {
-      setError("Supabase is not configured yet. Please contact us at haakon@napiva.com")
-      setIsSubmitting(false)
-      return
-    }
-
     // Validate required fields
-    if (!name.trim() || !email.trim() || !company.trim() || !projectHelp.trim()) {
+    if (!name.trim() || !email.trim() || !projectHelp.trim()) {
       setError("Please fill in all required fields.")
       setIsSubmitting(false)
       return
     }
 
+    if (website || name.length > 120 || email.length > 254 || company.length > 200 ||
+        projectHelp.length > 5000 || timeline.length > 200 || additionalInfo.length > 5000) {
+      setError("Please check the form fields and try again.")
+      setIsSubmitting(false)
+      return
+    }
+
     try {
+      const supabase = getSupabaseClient()
+      if (!supabase) {
+        setError("We cannot accept inquiries right now. Please email haakon@napiva.com.")
+        return
+      }
       const { error: insertError } = await supabase
         .from("project_inquiries")
         .insert({
           name: name.trim(),
           email: email.trim(),
-          company: company.trim(),
+          company: company.trim() || null,
           project_help: projectHelp.trim(),
           timeline: timeline.trim() || null,
           additional_info: additionalInfo.trim() || null,
@@ -78,8 +86,7 @@ export default function StartProjectPage() {
       setProjectHelp("")
       setTimeline("")
       setAdditionalInfo("")
-    } catch (err) {
-      console.error("Error submitting form:", err)
+    } catch {
       setError("Something went wrong. Please try again or email us directly.")
     } finally {
       setIsSubmitting(false)
@@ -156,7 +163,7 @@ export default function StartProjectPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-foreground mb-3">Inquiry sent!</h2>
                 <p className="text-muted-foreground mb-6">
-                  {"We've"} received your project inquiry. {"We'll"} get back to you within 24 hours.
+                  {"We've"} received your project inquiry. {"We'll"} review it and reply by email.
                 </p>
                 <button
                   onClick={() => setIsSuccess(false)}
@@ -174,7 +181,7 @@ export default function StartProjectPage() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Error message */}
                   {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+                    <div role="alert" className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
                       {error}
                     </div>
                   )}
@@ -191,6 +198,8 @@ export default function StartProjectPage() {
                         type="text"
                         placeholder="Your name"
                         required
+                        maxLength={120}
+                        autoComplete="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
@@ -204,6 +213,8 @@ export default function StartProjectPage() {
                         id="email"
                         name="email"
                         type="email"
+                        maxLength={254}
+                        autoComplete="email"
                         placeholder="you@company.com"
                         required
                         value={email}
@@ -216,14 +227,15 @@ export default function StartProjectPage() {
                   {/* Company */}
                   <div className="space-y-2">
                     <label htmlFor="company" className="text-sm font-medium text-foreground">
-                      Company <span className="text-primary">*</span>
+                      Company <span className="text-muted-foreground font-normal">(optional)</span>
                     </label>
                     <input
                       id="company"
                       name="company"
                       type="text"
                       placeholder="Your company name"
-                      required
+                      maxLength={200}
+                      autoComplete="organization"
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
                       className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
@@ -241,6 +253,7 @@ export default function StartProjectPage() {
                       placeholder="Tell us about your project, current challenges, and what you want help with..."
                       required
                       rows={4}
+                      maxLength={5000}
                       value={projectHelp}
                       onChange={(e) => setProjectHelp(e.target.value)}
                       className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
@@ -256,7 +269,8 @@ export default function StartProjectPage() {
                       id="timeline"
                       name="timeline"
                       type="text"
-                      placeholder="e.g. ASAP, Q3 2025, 3 months"
+                      placeholder="e.g. ASAP, next quarter, 3 months"
+                      maxLength={200}
                       value={timeline}
                       onChange={(e) => setTimeline(e.target.value)}
                       className="w-full h-12 px-4 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors"
@@ -273,11 +287,27 @@ export default function StartProjectPage() {
                       name="additional_info"
                       placeholder="Budget, specific tools you use, previous attempts, etc."
                       rows={3}
+                      maxLength={5000}
                       value={additionalInfo}
                       onChange={(e) => setAdditionalInfo(e.target.value)}
                       className="w-full px-4 py-3 bg-secondary/60 border border-border/60 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 transition-colors resize-none"
                     />
                   </div>
+
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="website">Leave this field empty</label>
+                    <input id="website" name="website" type="text" tabIndex={-1}
+                      autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                  </div>
+
+                  {/* Privacy notice */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Read how we handle your inquiry in our{" "}
+                    <Link href="/privacy-policy" className="text-primary hover:underline">
+                      Privacy Policy
+                    </Link>.
+                    Please do not include patient or medical information in your inquiry.
+                  </p>
 
                   {/* Submit button */}
                   <button
@@ -303,7 +333,7 @@ export default function StartProjectPage() {
 
           {/* Footer note */}
           <p className="text-center text-sm text-muted-foreground mt-8">
-            {"We'll"} respond within 24 hours. You can also reach us at{" "}
+            You can also reach us at{" "}
             <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
               haakon@napiva.com
             </a>

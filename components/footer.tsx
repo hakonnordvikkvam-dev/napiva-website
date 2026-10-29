@@ -81,7 +81,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/40">
           <p className="text-sm text-muted-foreground text-center">
-            © 2025 Napiva. All rights reserved.
+            © 2026 Napiva. All rights reserved. | NAPIVA KVAM | Org. nr. 938 698 465
           </p>
         </div>
       </div>

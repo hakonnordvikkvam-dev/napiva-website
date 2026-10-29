@@ -75,7 +75,7 @@ export function ContactForm() {
                 Ready to get started?
               </h3>
               <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                Fill out a quick form and {"we'll"} get back to you within 24 hours with the next steps.
+                Fill out a quick form and {"we'll"} review your inquiry and reply by email with the next steps.
               </p>
               
               <Link 
