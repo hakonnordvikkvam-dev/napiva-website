@@ -21,3 +21,9 @@
 [context.deploy-preview.environment]
   NEXT_PUBLIC_SUPABASE_URL = "https://bfsjmuhztzajiftwcwec.supabase.co"
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CedV79nJv9CzfnIGBj_ylw_YWNS-qZg"
+
+# Public client-side configuration for Netlify production after approved merge.
+# This block is NOT applied to the live site while the PR stays unmerged.
+[context.production.environment]
+  NEXT_PUBLIC_SUPABASE_URL = "https://bfsjmuhztzajiftwcwec.supabase.co"
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CedV79nJv9CzfnIGBj_ylw_YWNS-qZg"
