@@ -26,6 +26,7 @@ export default function StartProjectPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [serviceError, setServiceError] = useState(false)
   
   // Form state
   const [name, setName] = useState("")
@@ -41,6 +42,7 @@ export default function StartProjectPage() {
     if (isSubmitting) return
     setIsSubmitting(true)
     setError(null)
+    setServiceError(false)
 
     // Validate required fields
     if (!name.trim() || !email.trim() || !projectHelp.trim()) {
@@ -59,6 +61,7 @@ export default function StartProjectPage() {
     try {
       const supabase = getSupabaseClient()
       if (!supabase) {
+        setServiceError(true)
         setError("We cannot accept inquiries right now. Please email haakon@napiva.com.")
         return
       }
@@ -87,6 +90,7 @@ export default function StartProjectPage() {
       setTimeline("")
       setAdditionalInfo("")
     } catch {
+      setServiceError(true)
       setError("Something went wrong. Please try again or email us directly.")
     } finally {
       setIsSubmitting(false)
@@ -182,7 +186,19 @@ export default function StartProjectPage() {
                   {/* Error message */}
                   {error && (
                     <div role="alert" className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
-                      {error}
+                      <p>{error}</p>
+                      {serviceError && (
+                        <p className="mt-3">
+                          If the form is unavailable, email us at{" "}
+                          <a
+                            href="mailto:haakon@napiva.com?subject=Napiva%20project%20inquiry"
+                            className="font-medium text-primary underline underline-offset-2"
+                          >
+                            haakon@napiva.com
+                          </a>
+                          . Please do not include patient or medical information.
+                        </p>
+                      )}
                     </div>
                   )}
 
