@@ -88,8 +88,8 @@ export function ContactForm() {
               
               <p className="text-sm text-muted-foreground mt-6">
                 Or email us directly at{" "}
-                <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
-                  haakon@napiva.com
+                <a href="mailto:haakon.nordvik.kvam@gmail.com" className="text-primary hover:underline">
+                  haakon.nordvik.kvam@gmail.com
                 </a>
               </p>
             </div>
