@@ -15,7 +15,7 @@ The existing automated Supabase status check monitors project **health**, not ne
 
 Until notification delivery is tested, the authorized person handling Napiva inquiries must check the designated website Supabase dashboard each business day and follow up on new ordinary business inquiries. Avoid copying inquiry personal data into separate unmanaged lists or support chats.
 
-The fallback address `haakon@napiva.com` is visible when the website form fails. A harmless test email was sent to this address, but its delivery to the actual destination inbox has **not** been verified. An email-sending confirmation is not enough to claim this fallback works.
+The original form fallback address was `haakon@napiva.com`; a harmless test email was sent to it, but delivery to its actual destination was **not** verified. Draft PR #5 now changes the visible website fallback to `haakon.nordvik.kvam@gmail.com` (also in the footer and privacy-policy contact). This change is **not deployed to production**. The new Gmail destination has not been independently tested end-to-end from an external email client. An email-sending confirmation alone is not proof of delivery. This is a fallback contact address only: automatic per-inquiry notifications remain unimplemented.
 
 ## Preferred technical path to evaluate, not implement blindly
 
