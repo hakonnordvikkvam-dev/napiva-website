@@ -76,8 +76,8 @@ export default function PrivacyPolicyPage() {
             
             <p>
               For questions, contact{" "}
-              <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
-                haakon@napiva.com
+              <a href="mailto:haakon.nordvik.kvam@gmail.com" className="text-primary hover:underline">
+                haakon.nordvik.kvam@gmail.com
               </a>.
             </p>
           </div>
