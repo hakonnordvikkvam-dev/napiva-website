@@ -86,7 +86,7 @@ export function Hero() {
 
         {/* Subheadline */}
         <p className="mx-auto max-w-3xl text-lg sm:text-xl text-muted-foreground mb-12 text-pretty leading-relaxed">
-          We design, build, and connect full-stack systems, AI automations, and cinematic websites — production-grade work that runs itself.
+          We design, build, and connect full-stack systems, AI automations, and cinematic websites tailored to your business.
         </p>
 
         {/* CTA Buttons */}

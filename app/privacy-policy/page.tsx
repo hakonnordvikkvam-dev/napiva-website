@@ -43,25 +43,41 @@ export default function PrivacyPolicyPage() {
           
           <div className="prose prose-invert prose-sm max-w-none space-y-6 text-muted-foreground leading-relaxed">
             <p>
-              Napiva collects information submitted through the inquiry form, such as name, email, company, project details, and timeline.
+              NAPIVA KVAM (organisation number 938 698 465) is the data controller for information submitted through this website. We collect information provided through the inquiry form, including name, email, company, project details, timeline, and any additional information you choose to provide.
             </p>
             
             <p>
-              This information is used only to respond to inquiries and provide services.
+              This information is used to respond to inquiries and provide services. We review inquiries at least once per month and manually delete those no longer needed for the inquiry or necessary follow-up, unless we are required by law to retain them.
             </p>
             
+            <p>
+              Our legal basis for responding to business inquiries and following up on potential projects is our legitimate interest in handling requests sent to us (GDPR Article 6(1)(f)). We do not use inquiry information for marketing.
+            </p>
+
             <p>
               Napiva does not sell personal information.
             </p>
+
+            <p>
+              You may request access to, correction of, or deletion of your personal data, as well as restriction of processing or object to processing where applicable. To exercise your rights, contact us using the email address below. You may also lodge a complaint with the Norwegian Data Protection Authority (Datatilsynet).
+            </p>
             
             <p>
-              Data may be stored securely using third-party services such as Supabase and Vercel.
+              We use Supabase to store inquiries submitted through the website in its Ireland (EU) region and Netlify to host the website. These providers process inquiry data or technical request information, such as IP addresses, to deliver and secure their services. If you contact us by email, your message is also handled by the email providers involved in delivering and receiving it.
+            </p>
+
+            <p>
+              Our providers operate internationally, including in the United States and Singapore. An EU database region does not exclude processing elsewhere for support or service operations. Supabase and Netlify publish data processing agreements describing international-transfer safeguards, including the European Commission&apos;s Standard Contractual Clauses. Contact us for information about the safeguards applicable to your data.
+            </p>
+
+            <p>
+              This version of the website does not use advertising trackers or optional website analytics. Hosting and security providers may retain technical request logs under their own retention policies. The inquiry form does not require an account or a login cookie. Providing your name, email, and project description is necessary for us to handle the form inquiry; company, timeline, and additional information are optional. Please do not send patient or medical information.
             </p>
             
             <p>
               For questions, contact{" "}
-              <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">
-                haakon@napiva.com
+              <a href="mailto:haakon.nordvik.kvam@gmail.com" className="text-primary hover:underline">
+                haakon.nordvik.kvam@gmail.com
               </a>.
             </p>
           </div>

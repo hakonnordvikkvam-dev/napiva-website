@@ -31,10 +31,10 @@ export function Footer() {
               AI automation systems built to simplify operations, reduce manual work, and help businesses scale.
             </p>
             <a 
-              href="mailto:haakon@napiva.com" 
+              href="mailto:haakon.nordvik.kvam@gmail.com" 
               className="inline-flex text-sm text-primary hover:text-primary/80 transition-colors font-medium"
             >
-              haakon@napiva.com
+              haakon.nordvik.kvam@gmail.com
             </a>
           </div>
 
@@ -81,7 +81,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-border/40">
           <p className="text-sm text-muted-foreground text-center">
-            © 2025 Napiva. All rights reserved.
+            © 2026 Napiva. All rights reserved. | NAPIVA KVAM | Org. nr. 938 698 465
           </p>
         </div>
       </div>

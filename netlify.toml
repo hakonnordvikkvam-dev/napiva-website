@@ -1,0 +1,29 @@
+[build]
+  command = "node scripts/verify-netlify-supabase-env.mjs && pnpm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PNPM_VERSION = "10.34.9"
+
+# Next.js is handled by Netlify's automatically managed OpenNext adapter.
+# Set the two NEXT_PUBLIC_SUPABASE_* values in the site's build environment.
+# Never place private credentials in this file.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+
+# Temporary PUBLIC configuration for PR deploy previews only. Remove after account vars work.
+[context.deploy-preview.environment]
+  NEXT_PUBLIC_SUPABASE_URL = "https://bfsjmuhztzajiftwcwec.supabase.co"
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CedV79nJv9CzfnIGBj_ylw_YWNS-qZg"
+
+# Public client-side configuration for Netlify production after approved merge.
+# This block is NOT applied to the live site while the PR stays unmerged.
+[context.production.environment]
+  NEXT_PUBLIC_SUPABASE_URL = "https://bfsjmuhztzajiftwcwec.supabase.co"
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CedV79nJv9CzfnIGBj_ylw_YWNS-qZg"
