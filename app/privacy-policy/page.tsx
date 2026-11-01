@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
           <div className="prose prose-invert prose-sm max-w-none space-y-6 text-muted-foreground leading-relaxed">
             <p><strong className="text-foreground">Last updated:</strong> 1 November 2026</p>
             <h2 className="text-xl font-semibold text-foreground">Who is responsible?</h2>
-            <p>Napiva operates this website and handles inquiries sent through it. For questions about your personal information or to exercise your rights, email <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">haakon@napiva.com</a>.</p>
+            <p>The data controller for inquiries submitted through this website is NAPIVA KVAM, a Norwegian sole proprietorship (organization number 938 698 465), operating under the Napiva brand. For questions about your personal information or to exercise your rights, email <a href="mailto:haakon@napiva.com" className="text-primary hover:underline">haakon@napiva.com</a>.</p>
             <h2 className="text-xl font-semibold text-foreground">What information do we collect?</h2>
             <p>When you send an inquiry, the form collects your name, email address, company, project description and, if provided, your preferred timeline and additional information. Necessary technical information may also be processed by our hosting provider to provide and secure the website.</p>
             <p>Please do not include patient information, medical details, passwords or other sensitive personal information in the free-text fields.</p>
