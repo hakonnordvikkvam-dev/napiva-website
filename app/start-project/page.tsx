@@ -279,6 +279,16 @@ export default function StartProjectPage() {
                     />
                   </div>
 
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    We use the information you submit to review and respond to your inquiry.
+                    Do not include patient details or other sensitive personal information.
+                    Read our{" "}
+                    <Link href="/privacy-policy" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                      Privacy Policy
+                    </Link>{" "}
+                    for details about how information is handled and your rights.
+                  </p>
+
                   {/* Submit button */}
                   <button
                     type="submit"
